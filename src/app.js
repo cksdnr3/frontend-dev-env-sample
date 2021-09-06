@@ -1,10 +1,5 @@
-import "./app.css";
-import nyancat from './nyancat.jpg';
+const alert = (msg) => window.alert(msg);
 
-document.addEventListener('DOMContentLoaded' , () => {
-    document.body.innerHTML = `<img src="${nyancat}" />`
-})
-
-console.log(process.env.NODE_ENV);
-console.log(TWO);
-console.log(api.domain);
+for (let i = 0; i < 10; i++) {
+    if (i = 1) console.log(i);
+}
