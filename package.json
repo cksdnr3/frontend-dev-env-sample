@@ -6,8 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
-    "lint": "eslint src --fix",
-    "prepare": "husky install"
+    "lint": "eslint src --fix"
   },
   "author": "",
   "license": "ISC",
@@ -41,7 +40,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "echo \"이것은 커밋전에 출력됨\""
+      "pre-commit": "npm run lint"
     }
   }
 }
