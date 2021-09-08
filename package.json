@@ -40,7 +40,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "echo \"이것은 커밋 전에 출력됨\""
+      "pre-commit": "echo \"이것은 커밋전에 출력됨\""
     }
   }
 }
