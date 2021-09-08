@@ -1,5 +1,3 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
-
-npm test
-echo "이것은 커밋전에 출력됨"
+npx eslint src --fix
