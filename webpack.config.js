@@ -4,15 +4,57 @@ const childProcess = require("child_process");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const apiMocker = require("connect-api-mocker");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
+
+const mode = process.env.NODE_ENV || "developoment";
 
 module.exports = {
-  mode: "development",
+  mode,
   entry: {
     main: "./src/app.js",
   },
   output: {
     path: path.resolve("./dist"),
     filename: "[name].js",
+  },
+  devServer: {
+    port: 3000,
+    client: {
+      progress: true,
+      overlay: {
+        errors: true,
+      },
+      logging: "error",
+    },
+    onBeforeSetupMiddleware: (devServer) => {
+      if (!devServer) throw new Error("webpack-dev-server is not defined");
+      devServer.app.use(apiMocker("/api", "mocks/api"));
+      // devServer.app.get("/api/users", (req, res) => {
+      //   res.json([
+      //     {
+      //       id: 1,
+      //       name: "alice",
+      //     },
+      //     {
+      //       id: 2,
+      //       name: "tom",
+      //     },
+      //     {
+      //       id: 3,
+      //       name: "james",
+      //     },
+      //   ]);
+      // });
+    },
+    proxy: {
+      "/api": "http://localhost:3000",
+    },
+    hot: true,
+  },
+  optimization: {
+    minimizer: mode === "production" ? [new CssMinimizerPlugin()] : [],
   },
   module: {
     rules: [
@@ -65,5 +107,13 @@ module.exports = {
     ...(process.env.NODE_ENV === "production"
       ? [new MiniCssExtractPlugin({ filename: "[name].css" })]
       : []),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: "./node_modules/axios/dist/axios.min.js",
+          to: "./axios.min.js",
+        },
+      ],
+    }),
   ],
 };
